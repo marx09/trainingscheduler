@@ -1,0 +1,35 @@
+<div class="col-sm-10">
+  <h2>Excercises</h2>
+  <div id="excercise_grid" class="row">
+    <% @excercises.each do |e| %>
+      <%= render partial: 'item', locals: {excercise: e} %>
+    <% end %>
+  </div>
+</div>
+
+<% if current_user.has_role? "admin" %>
+
+<div class="col-sm-2">
+  <div class="well clearfix">
+    <%= link_to ("<i class='fa fa-plus fa-fw'></i> New excercise").html_safe, '#new_excercise_modal', 'data-toggle' => 'modal', class: 'btn btn-success col-xs-12' %>
+  </div>
+</div>
+
+<div class="modal fade" id="new_excercise_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Create new excercise</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', modal: true, button: 'Create' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% end %>

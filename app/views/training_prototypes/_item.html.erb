@@ -1,0 +1,8 @@
+<% current_training = Training.find_by(training_prototype_id: prototype, date: (date.beginning_of_week+prototype.day-1)) %>
+<div class="btn-group training" data-class="<%= prototype.from.hour.to_s+prototype.day.to_s %>" style="width: 100%;">
+<% if current_training %>
+  <%= link_to "#{prototype.group.name if prototype.group}", training_path(current_training), class: "btn btn-xs btn-primary", style: "width: 100%;" %>
+<% else %>
+  <%= link_to "#{prototype.group.name if prototype.group}", create_training_from_prototype_path(prototype, date.beginning_of_week+prototype.day-1), method: :put, class: "btn btn-xs btn-default", style: "width: 100%;" %>
+<% end %>
+</div>

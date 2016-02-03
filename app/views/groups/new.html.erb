@@ -1,0 +1,10 @@
+<h2 class="text-center">New group</h2>
+  <%= form_for(@group) do |f| %>
+    <div class="form-group">
+      <%= f.label :name %><br>
+      <%= f.text_field :name, required: true, id: "group_name", class: "form-control" %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Create", class: "btn btn-primary" %>
+    </div>
+  <% end %>

@@ -1,0 +1,26 @@
+<tr class="slot">
+  <td>
+    <% slot.series.each do |serie| %>
+      <div class="row">
+        <div class="col-sm-5">
+          <strong><%= serie.excercise.name %></strong><br />
+          <p>
+            Series: <%= serie.series %><br />
+            Note: <%= serie.note %>
+          </p>
+        </div>
+        <div class="col-sm-7">
+          <div class="row">
+            <% @training.users.each do |u| %>
+              <div class="col-sm-3" id="result-<%= serie.id.to_s+"-"+u.id.to_s %>">
+                <%= render partial: 'user_result', locals: {user: u, serie: serie} %>
+              </div>
+            <% end %>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    <% end %>
+    <p><%= slot.note%></p>
+  </td>
+</tr>

@@ -1,0 +1,200 @@
+<div class="col-sm-10 clearfix">
+  <div class="row">
+    <div class="col-sm-3">
+      <h2><%= @training.date.to_s(:custom)+" "+@training.from.to_s(:time) %></h2>
+      
+    </div>
+    <div class="col-sm-9">
+      <% @training.users.each do |u| %>
+        <%= render partial: 'user', locals: {user: u, training: @training} %>
+      <% end %>
+    </div>
+  </div>
+  
+  <table class="table excercises">
+    <% if @training.slots.empty? %>
+      <tr>
+        <td>There are no excercises yet! <%= link_to "Plan it!", plan_training_content_path(@training) %></td>
+      </tr>
+    <% else %>
+      <tr>
+        <th>
+          <div class="row">
+            <div class="col-sm-5">
+              Excercise
+            </div>
+            <div class="col-sm-7">
+              Results
+            </div>
+          </div>
+        </th>
+      </tr>
+      <% @training.slots.each do |slot| %>
+        <%= render partial: 'slot_view', locals: {slot: slot, users: @training.users} %>
+      <% end %>
+    <% end %>
+  </table>
+  
+</div>
+<div class="col-sm-2">
+  <div class="well clearfix">
+    <%= link_to ("<i class='fa fa-bars fa-fw'></i> Plan training").html_safe, plan_training_content_path(@training), class: 'btn btn-info col-xs-12' %>
+    <%= link_to ('<i class="fa fa-users"></i> Manage users').html_safe, "#manage_users_modal", 'data-toggle' => 'modal', 'data-training-id' => @training.id, class: "btn btn-primary col-xs-12" %>
+    <div class="pull-left">
+      &nbsp;
+    </div>
+    <%= link_to ("<i class='fa fa-pencil fa-fw'></i> Edit training").html_safe, '#edit_training_modal', 'data-toggle' => 'modal', class: 'btn btn-warning col-xs-12' %>
+    <%= link_to ("<i class='fa fa-trash fa-fw'></i> Delete training").html_safe, training_path(@training), method: :delete, class: 'btn btn-danger col-xs-12', data: { confirm: "Are you sure?" } %>
+  </div>
+</div>
+
+<div class="col-xs-12">
+  <%= link_to ("<i class='fa fa-chevron-left fa-fw'></i> Back").html_safe, :back, :class => "btn btn-sm btn-warning" %>
+</div>
+
+<div class="modal fade" id="edit_training_modal" tabindex="-1" role="dialog" aria-labelledby="editTrainingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="editTrainingModalLabel">Edit training</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', modal: true, button: 'Update' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="manage_users_modal" tabindex="-1" role="dialog" aria-labelledby="manageUsersModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="manageUsersModalLabel">Manage users</h4>
+      </div>
+      <div class="modal-body">
+        
+        <div id="users_grid">
+          <div class="row">
+            <div class="current_users col-sm-6">
+              <h3>Participants</h3>
+              <div class="content">
+              </div>
+            </div>
+            
+            <div class="available_users col-sm-6">
+              <h3>Available</h3>
+              <div class="content">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="user-prototypes hidden">
+          
+          <div class="user" data-user-id="">
+            <span class="name"></span><br />
+            <span class="email"></span><br />
+            <button class="btn btn-sm btn-danger remove-btn"><i class="fa fa-close fa-fw"></i> Remove</button>
+            <button class="btn btn-sm btn-info add-btn"><i class="fa fa-plus fa-fw"></i> Add</button>
+          </div>  
+        </div>
+        
+        <div>
+          <br />
+          <%= form_tag save_training_users_path(@training), remote: true, method: 'post', authenticity_token: false, class: 'training-users-data' do %>
+            <%= hidden_field_tag 'data_string' %>
+            <%= button_tag ("<i class='fa fa-save'></i> Save").html_safe, class: "btn btn-success" %>
+          <% end %>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="user_result_modal" tabindex="-1" role="dialog" aria-labelledby="userResultModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="userResultModalLabel"><span class="excercise"></span> - <span class="user-name"></span></h4>
+        <%= @training.date.to_s(:custom) %>
+      </div>
+      <div class="modal-body">
+        <%= form_tag save_user_result_path(), remote: true, method: 'post', authenticity_token: false, class: 'training-users-result-data' do %>
+          
+          <%= hidden_field_tag 'user_id' %>
+          <%= hidden_field_tag 'serie_id' %>
+          <%= hidden_field_tag 'result_id' %>
+          <div class="form-group">
+            <%= number_field_tag 'reps', nil, min: 0, placeholder: 'Reps', class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <%= number_field_tag 'time', nil, min: 0, placeholder: 'Time', class: "form-control" %>
+              <div class="input-group-addon">sec</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <%= number_field_tag 'weight', nil, step: 'any', placeholder: 'Weight', class: "form-control" %>
+              <div class="input-group-addon">kg</div>
+            </div>
+          </div>
+          <%= button_tag ("<i class='fa fa-save'></i> Save").html_safe, class: "btn btn-success" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="user_training_result_modal" tabindex="-1" role="dialog" aria-labelledby="userTrainingResultModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="userTrainingResultModalLabel">Training result - <span class="user-name"></span></h4>
+        <%= @training.date.to_s(:custom) %>
+      </div>
+      <div class="modal-body">
+        <%= form_tag save_training_user_result_path(), remote: true, method: 'post', authenticity_token: false, class: 'training-users-training-result-data' do %>
+          
+          <%= hidden_field_tag 'user_id' %>
+          <%= hidden_field_tag 'training_id' %>
+          <%= hidden_field_tag 'result_id' %>
+          <div class="form-group">
+            <%= number_field_tag 'calories', nil, min: 0, placeholder: 'Calories', class: "form-control" %>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <%= number_field_tag 'time', nil, min: 0, placeholder: 'Time', class: "form-control" %>
+              <div class="input-group-addon">min</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <%= number_field_tag 'rate', nil, step: 'any', placeholder: 'Heart rate', class: "form-control" %>
+              <div class="input-group-addon">bpm</div>
+            </div>
+          </div>
+          <%= button_tag ("<i class='fa fa-save'></i> Save").html_safe, class: "btn btn-success" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>

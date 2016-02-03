@@ -1,0 +1,51 @@
+<div class="col-sm-10">
+  <h2>Trainings</h2>
+  
+  <div id="calendar-wrapper">
+    
+    <%= render partial: 'calendar', locals: {prototypes: @prototypes, trainings: @trainings, date: @date} %>
+  
+  </div>
+  
+</div>
+
+<div class="col-sm-2">
+  <div class="well clearfix">
+    <%= link_to ("<i class='fa fa-plus fa-fw'></i> New training").html_safe, '#new_training_modal', 'data-toggle' => 'modal', class: 'btn btn-success col-xs-12' %>
+    <%= link_to ("<i class='fa fa-plus fa-fw'></i> New training plan").html_safe, '#new_prototype_modal', 'data-toggle' => 'modal', class: 'btn btn-info col-xs-12' %>
+  </div>
+</div>
+
+<div class="modal fade" id="new_training_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Create new training</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', modal: true, button: 'Create' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="new_prototype_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Create new training plan</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'prototype_form', modal: true, button: 'Create' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>

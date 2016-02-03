@@ -1,0 +1,3 @@
+flashes_redraw("<%= j render partial: 'layouts/flashes' %>");
+$('#result-'+<%= @result.serie.id %>+'-'+<%= @result.user.id %>).html("<%= j render partial: 'user_result', locals: {user: @result.user, serie: @result.serie } %>");
+$('#user_result_modal').modal_success();

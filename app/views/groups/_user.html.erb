@@ -1,0 +1,16 @@
+<div class="col-sm-<%= width %>" id="user-<%= user.id %>">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <%= image_tag user.avatar.url(:thumb), :class => "avatar-thumb pull-left" %>
+      <%= link_to "#{user.first_name} #{user.last_name}", user_path(user) %><br />
+      <%= user.email %>
+    </div>
+    <div class="panel-footer">
+      <% if user.group.equal? nil %>
+        <%= link_to ("<i class='fa fa-plus fa-fw'></i> Add").html_safe, add_user_to_group_path(group, user), remote: true, method: :put, class: 'btn btn-primary' %>
+      <% else %>
+        <%= link_to ("<i class='fa fa-times fa-fw'></i> Remove").html_safe, remove_user_from_group_path(group, user), remote: true, method: :put, class: 'btn btn-danger' %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="flashes-box">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key.casecmp("alert") ? "info" : key %> alert-dismissible fade in" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <%= value %>
+    </div>
+  <% end %>
+  <% flash.discard %>
+  <script type="text/javascript">
+    setTimeout(function() {
+      $('.flashes-box>.alert>.close').click();
+    }, 6000);
+  </script>
+</div>

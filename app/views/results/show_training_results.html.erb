@@ -1,0 +1,29 @@
+<div class="col-sm-9 clearfix">
+  <h2>Training results<%= " - #{@user.first_name} #{@user.last_name}" %></h2>
+  <h3>Calories</h3>
+  <%= line_chart (@user.training_results.map { |r| [r.training.date, r.calories ] if r.calories }).select { |item| item }, library: {'hAxis' => {'format' => 'd.M.yyyy'}} %>
+  
+  <h3>Time</h3>
+  <%= line_chart (@user.training_results.map { |r| [r.training.date, r.time ] if r.time }).select { |item| item }, library: {'hAxis' => {'format' => 'd.M.yyyy'}} %>
+  
+  <h3>Heart rate</h3>
+  <%= line_chart (@user.training_results.map { |r| [r.training.date, r.rate ] if r.rate }).select { |item| item }, library: {'hAxis' => {'format' => 'd.M.yyyy'}} %>
+  
+</div>
+
+<div class="col-sm-3">
+  <div class="panel panel-info">
+    <div class="panel-body">
+      <% calories = @user.training_results.maximum('calories') %>
+      <% max_time = @user.training_results.maximum('time') %>
+      <% min_time = @user.training_results.minimum('time') %>
+      <% max_rate = @user.training_results.maximum('rate') %>
+      <% min_rate = @user.training_results.minimum('rate') %>
+      Calories (max): <%= calories %><br />
+      Time (max): <%= max_time.to_s+" min" if max_time %><br />
+      Time (min): <%= min_time.to_s+" min" if min_time %><br />
+      Heart rate (max): <%= max_rate.to_s+" min" if max_rate %><br />
+      Heart rate (min): <%= min_rate.to_s+" min" if min_rate %><br />
+    </div>
+  </div>
+</div>

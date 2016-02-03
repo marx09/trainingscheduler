@@ -1,0 +1,31 @@
+<div class="col-sm-9">
+  <h2><%= @excercise.name %></h2>
+  <%= @excercise.description %>
+</div>
+<div class="col-sm-3">
+  <div class="well clearfix">
+    <%= link_to ("<i class='fa fa-pencil fa-fw'></i> Edit excercise").html_safe, '#edit_excercise_modal', 'data-toggle' => 'modal', class: 'btn btn-warning col-xs-12' %>
+    <%= link_to ("<i class='fa fa-trash fa-fw'></i> Delete excercise").html_safe, excercise_path(@excercise), method: :delete, class: 'btn btn-danger col-xs-12', data: { confirm: "Are you sure?" } %>
+  </div>
+</div>
+
+<div class="col-xs-12">
+  <%= link_to ("<i class='fa fa-chevron-left fa-fw'></i> Back").html_safe, :back, :class => "btn btn-sm btn-warning" %>
+</div>
+
+<div class="modal fade" id="edit_excercise_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Edit excercise <%= @excercise.name %></h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', modal: true, button: 'Update' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>

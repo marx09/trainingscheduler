@@ -1,0 +1,3 @@
+flashes_redraw("<%= j render partial: 'layouts/flashes' %>");
+$('#groups_grid').prepend("<%= j render partial: 'item', locals: {group: @group } %>");
+$('#new_group_modal').modal_success();

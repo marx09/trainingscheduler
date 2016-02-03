@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="current_users col-sm-6">
+    <h3>Participants</h3>
+    <div class="content">
+      <% @participants.each do |u| %>
+        <div class="user" data-user-id="<%= u.id %>">
+          <%= image_tag u.avatar.url(:thumb), :class => "avatar-thumb pull-left" %>
+          <span class="name"><%= u.first_name+" "+u.last_name %></span><br />
+          <span class="email"><%= u.email %></span><br />
+          <button class="btn btn-sm btn-danger remove-btn"><i class="fa fa-close fa-fw"></i> Remove</button>
+          <button class="btn btn-sm btn-info add-btn"><i class="fa fa-plus fa-fw"></i> Add</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="available_users col-sm-6">
+    <h3>Available</h3>
+    <div class="content">
+      <% @available.each do |u| %>
+        <div class="user" data-user-id="<%= u.id %>">
+          <%= image_tag u.avatar.url(:thumb), :class => "avatar-thumb pull-left" %>
+          <span class="name"><%= u.first_name+" "+u.last_name %></span><br />
+          <span class="email"><%= u.email %></span><br />
+          <button class="btn btn-sm btn-danger remove-btn"><i class="fa fa-close fa-fw"></i> Remove</button>
+          <button class="btn btn-sm btn-info add-btn"><i class="fa fa-plus fa-fw"></i> Add</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

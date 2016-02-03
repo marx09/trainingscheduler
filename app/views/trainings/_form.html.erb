@@ -1,0 +1,43 @@
+<% modal ||= false %>
+<% remote = modal ? true : false %>
+<%= form_for(@training, remote: remote, html: {role: :form, 'data-model' => 'training'}) do |f| %>
+
+  <% if @training.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@training.errors.count, "error") %> prohibited this training from being saved:</h2>
+
+      <ul>
+      <% @training.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :date, class: 'control-label' %>
+    <div class="input-group datepicker">
+      <%= f.text_field :date, value: (f.object.date.to_formatted_s(:custom) if f.object.date), class: 'form-control' %>
+      <span class="input-group-addon">
+        <i class="fa fa-calendar fa-fw"></i>
+      </span>
+    </div>
+    <span class="help-block"></span>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :from, class: 'control-label' %>
+    <div class="input-group timepicker">
+      <%= f.text_field :from, value: (f.object.from.to_formatted_s(:time) if f.object.from), class: 'form-control' %>
+      <span class="input-group-addon">
+          <i class="fa fa-clock-o fa-fw"></i>
+      </span>
+    </div>
+    <span class="help-block"></span>
+  </div>
+
+  <div class="actions">
+    <%= f.submit button, class: 'btn btn-success' %>
+  </div>
+
+<% end %>

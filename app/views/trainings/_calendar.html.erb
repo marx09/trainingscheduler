@@ -1,0 +1,38 @@
+<table id="trainings_table" class="table table-bordered">
+  <tr>
+    <th class="text-center" style="width: 1em;">
+      <% next_date = @date + 7 %>
+      <% prev_date = @date - 7 %>
+      <%= link_to ('<i class="fa fa-angle-left fa-fw"></i>').html_safe, calendar_move_path(prev_date.year, prev_date.month, prev_date.day), remote: true, class: "btn btn-sm btn-default" %><%= link_to ('<i class="fa fa-angle-right fa-fw"></i>').html_safe, calendar_move_path(next_date.year, next_date.month, next_date.day), remote: true, class: "btn btn-sm btn-default" %>
+    </th>
+    <% week_beginning = date.beginning_of_week %>
+    <% (1..6).each do |d| %>
+      <th class="text-center"><%= (week_beginning+d-1).to_s(:day_of_week) %><br /><%= (week_beginning+d-1).to_s(:custom) %></th>
+    <% end %>
+  </tr>
+  <% (7..19).each do |h| %>
+    <tr>
+      <td class="text-center"><%= h %></td>
+      <% (1..6).each do |d| %>
+        <td class="<%= h.to_s+d.to_s %> active"></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<div id="trainings_wrapper" style="display: none;">
+  <% prototypes.each do |p| %>
+    <%= render partial: 'prototype_item', locals: {prototype: p, date: @date} %>
+  <% end %>
+  
+  <% trainings.each do |t| %>
+    <%= render partial: 'item', locals: {training: t} %>
+  <% end %>
+  
+  <script type="text/javascript">
+    $('#trainings_wrapper .training').each(function() {
+      var position = $(this).data('class');
+      $('#trainings_table td.'+position).removeClass('active').addClass('success').append($(this));
+    });
+  </script>
+</div>

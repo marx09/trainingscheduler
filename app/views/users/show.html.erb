@@ -1,0 +1,60 @@
+<div class="col-sm-12 clearfix">  
+  <h2><%= @user.first_name+" "+@user.last_name%></h2>
+  <div class="row">
+    <div class="col-sm-9">
+      <h3>Results</h3>
+      <div class="row">
+        <% @results.each do |r| %>
+          <div class="col-sm-4">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <%= link_to r['name'], excercise_path(r['id']) %>
+              </div>
+              <div class="panel-body">
+                Reps (max): <%= r['max_reps'] %><br />
+                Time (max): <%= r['max_time'].to_s+" sec" if r['max_time'] %><br />
+                Time (min): <%= r['min_time'].to_s+" sec" if r['min_time'] %><br />
+                Weight (max): <%= r['max_weight'].to_s+ " kg" %>
+              </div>
+              <div class="panel-footer">
+                <%= link_to ('<i class="fa fa-line-chart"></i> Show chart').html_safe, results_excercise_show_path(r['id'], @user), class: "btn btn-sm btn-success" %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="col-sm-3">
+      <h3>Training results</h3>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <% calories = @user.training_results.maximum('calories') %>
+              <% max_time = @user.training_results.maximum('time') %>
+              <% min_time = @user.training_results.minimum('time') %>
+              <% max_rate = @user.training_results.maximum('rate') %>
+              <% min_rate = @user.training_results.minimum('rate') %>
+              Calories (max): <%= calories %><br />
+              Time (max): <%= max_time.to_s+" min" if max_time %><br />
+              Time (min): <%= min_time.to_s+" min" if min_time %><br />
+              Heart rate (max): <%= max_rate.to_s+" min" if max_rate %><br />
+              Heart rate (min): <%= min_rate.to_s+" min" if min_rate %><br />
+            </div>
+            <div class="panel-footer">
+              <%= link_to ('<i class="fa fa-line-chart"></i> Show chart').html_safe, results_training_show_path(@user), class: "btn btn-sm btn-success" %>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xs-12">
+  <%= link_to ("<i class='fa fa-chevron-left fa-fw'></i> Back").html_safe, :back, :class => "btn btn-sm btn-warning" %>
+</div>
+
+

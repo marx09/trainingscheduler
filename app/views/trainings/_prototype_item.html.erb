@@ -1,0 +1,17 @@
+<% current_training = Training.find_by(training_prototype_id: prototype, date: (date.beginning_of_week+prototype.day-1)) %>
+<div class="btn-group training" data-class="<%= prototype.from.hour.to_s+prototype.day.to_s %>">
+<% if current_training %>
+  <%= link_to "#{prototype.group.name if prototype.group}", training_path(current_training), class: "btn btn-xs btn-primary" %>
+<% else %>
+  <%= link_to "#{prototype.group.name if prototype.group}", create_training_from_prototype_path(prototype, date.beginning_of_week+prototype.day-1), method: :put, class: "btn btn-xs btn-default" %>
+<% end %>
+  <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><%= link_to "Edit plan", training_prototype_path(prototype) %></li>
+    <li role="separator" class="divider"></li>
+    <li><%= link_to "Group detail", group_path(prototype.group) %></li>
+  </ul>
+</div>

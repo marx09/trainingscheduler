@@ -1,0 +1,3 @@
+flashes_redraw("<%= j render partial: 'layouts/flashes' %>");
+$('#members_grid #user-<%= @user.id %>').remove();
+$('#available_grid').prepend("<%= j render partial: 'user', locals: {user: @user, group: @group, width: 12 } %>");

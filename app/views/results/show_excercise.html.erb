@@ -1,0 +1,23 @@
+<div class="col-sm-9 clearfix">
+  <h2><%= "#{@excercise.name} - #{@user.first_name} #{@user.last_name}" %></h2>
+  <%= line_chart [
+      {name: "Reps", data: (@results.map { |r| [r.serie.slot.training.date, r.reps ] if r.reps }).select { |item| item } },
+      {name: "Time", data: (@results.map { |r| [r.serie.slot.training.date, r.time ] if r.time }).select { |item| item } },
+      {name: "Weight", data: (@results.map { |r| [r.serie.slot.training.date, r.weight ] if r.weight }).select { |item| item } }
+  ], library: {'hAxis' => {'format' => 'd.M.yyyy'}} %>
+  
+</div>
+
+<div class="col-sm-3">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <%= link_to @excercise.name, excercise_path(@excercise) %>
+    </div>
+    <div class="panel-body">
+      Reps (max): <%= @result['max_reps'] %><br />
+      Time (max): <%= @result['max_time'].to_s+" sec" if @result['max_time'] %><br />
+      Time (min): <%= @result['min_time'].to_s+" sec" if @result['min_time'] %><br />
+      Weight (max): <%= @result['max_weight'].to_s+" kg" %>
+    </div>
+  </div>
+</div>

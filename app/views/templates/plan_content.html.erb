@@ -1,0 +1,56 @@
+<div class="col-sm-10 clearfix">
+  <div class="row">
+    <div class="col-sm-3">
+      <h2>Planning <%= @training.date.to_s(:custom)+" "+@training.from.to_s(:time) %></h2>
+    </div>
+    <div class="col-sm-9">
+      <% @training.users.each do |u| %>
+        <% render partial: 'user', locals: {user: u, training: @training} %>
+      <% end %>
+    </div>
+  </div>
+  
+  <p>
+    <a href="#" class="btn btn-warning">Load from template</a>
+  </p>
+  
+  <div id="training_grid" data-training-id="<%= @training.id %>">
+  
+    <% @training.slots.each do |slot| %>
+      <%= render partial: 'slot', locals: {slot: slot} %>
+    <% end %>
+    
+    <div id="last-slot" class="clearfix"></div>
+    
+    <p>
+      <button class="btn btn-primary" id="add-slot-btn"><i class="fa fa-plus"></i> Add part</button>
+    </p>
+    
+    <p class="text-right">
+      <%= form_tag save_training_content_path(@training), remote: true, method: 'post', authenticity_token: false, class: 'training-data text-right' do %>
+        <%= hidden_field_tag 'data_string' %>
+        <%= button_tag ("<i class='fa fa-save'></i> Save").html_safe, class: "btn btn-lg btn-success" %>
+      <% end %>
+    </p>
+  
+  </div>
+  
+</div>
+
+<div class="col-sm-2">
+  <div class="well clearfix">
+    <%= link_to ("<i class='fa fa-chevron-left fa-fw'></i> Back to training").html_safe, training_path(@training), class: 'btn btn-info col-xs-12' %>
+  </div>
+</div>
+
+
+<div class="col-xs-12">
+  <%= link_to ("<i class='fa fa-chevron-left fa-fw'></i> Back").html_safe, :back, :class => "btn btn-sm btn-warning" %>
+</div>
+
+<div id="block-prototypes" style="display: none;">
+  <%= render partial: 'slot', locals: {slot: nil} %>
+  <table>
+    <%= render partial: 'serie', locals: {serie: nil}  %>
+  </table>
+</div>

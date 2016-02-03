@@ -1,0 +1,3 @@
+flashes_redraw("<%= j render partial: 'layouts/flashes' %>");
+$('#excercises_grid').prepend("<%= j render partial: 'item', locals: {excercise: @excercise } %>");
+$('#new_excercise_modal').modal_success();

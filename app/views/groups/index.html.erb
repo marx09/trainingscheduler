@@ -1,0 +1,42 @@
+<div class="col-sm-10">
+  <h2>Groups</h2>
+  <div id="groups_grid" class="row">
+    <% @groups.each do |g| %>
+      <%= render partial: 'item', locals: {group: g} %>
+    <% end %>
+  </div>
+</div>
+
+<div class="col-sm-2">
+  <div class="well clearfix">
+    <%= link_to ("<i class='fa fa-plus fa-fw'></i> New group").html_safe, '#new_group_modal', 'data-toggle' => 'modal', class: 'btn btn-success col-xs-12' %>
+  </div>
+  
+  <div class="well clearfix">
+    <h3>Users without group</h3>
+    <% @available_users.each do |u| %>
+      <div>
+        <%= image_tag u.avatar.url(:thumb), :class => "avatar-thumb pull-left" %>
+        <%= link_to "#{u.first_name} #{u.last_name}", user_path(u) %><br />
+        <%= u.email %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="modal fade" id="new_group_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Create new group</h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', modal: true, button: 'Create' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>

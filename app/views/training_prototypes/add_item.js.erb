@@ -1,0 +1,3 @@
+flashes_redraw("<%= j render partial: 'layouts/flashes' %>");
+$('#training_prototypes_grid .day-<%= @prototype.day %> .hour-<%= @prototype.from.to_s(:time).to_i %>').append("<%= j render partial: 'item', locals: {prototype: @prototype, date: Date.today } %>");
+$('#new_prototype_modal').modal_success();

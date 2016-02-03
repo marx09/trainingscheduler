@@ -1,0 +1,50 @@
+<div class="col-sm-10">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2><%= @group.name %></h2>
+    </div>
+    <div class="col-sm-8">
+      <h3>Group members</h3>
+      <div id="members_grid" class="row">
+        <% @group.users.each do |u| %>
+          <%= render partial: 'user', locals: {user: u, group: @group, width: 6 } %>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h3>Available members</h3>
+      <div id="available_grid" class="row">
+        <% @available_users.each do |u| %>
+          <%= render partial: 'user', locals: {user: u, group: @group, width: 12 } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-sm-2">
+  <div class="well clearfix">
+    <%= link_to ("<i class='fa fa-trash fa-fw'></i> Delete group").html_safe, group_path(@group), method: :delete, class: 'btn btn-danger col-xs-12', data: { confirm: "Are you sure?" } %>
+    <%= link_to ("<i class='fa fa-pencil fa-fw'></i> Edit group").html_safe, '#edit_group_modal', 'data-toggle' => 'modal', class: 'btn btn-warning col-xs-12' %>
+  </div>
+</div>
+
+<div class="col-xs-12">
+  <%= link_to ("<i class='fa fa-chevron-left fa-fw'></i> Back").html_safe, :back, :class => "btn btn-sm btn-warning" %>
+</div>
+
+<div class="modal fade" id="edit_group_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Edit group <%= @group.name %></h4>
+      </div>
+      <div class="modal-body">
+        <%= render 'form', modal: true, button: 'Update' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
+</div>

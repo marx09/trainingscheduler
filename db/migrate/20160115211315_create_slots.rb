@@ -3,7 +3,7 @@ class CreateSlots < ActiveRecord::Migration
     create_table :slots do |t|
       t.integer :order
       t.text :note
-      t.belongs_to :training, index: true
+      t.references :slotable, polymorphic: true, index: true
       
       t.timestamps null: false
     end

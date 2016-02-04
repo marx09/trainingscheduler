@@ -7,7 +7,7 @@ class Training < ActiveRecord::Base
   before_save :check_prototype
   
   has_and_belongs_to_many :users
-  has_many :slots
+  has_many :slots, as: :slotable
   belongs_to :training_prototype
   has_many :training_results
   
@@ -32,7 +32,7 @@ class Training < ActiveRecord::Base
         slots_collection << slot
       end
       self.slots = slots_collection
-      Slot.where(training: nil).destroy_all
+      Slot.where(slotable: nil).destroy_all
     end
   end
   

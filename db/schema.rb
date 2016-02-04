@@ -71,14 +71,16 @@ ActiveRecord::Schema.define(version: 20160201202011) do
   create_table "slots", force: :cascade do |t|
     t.integer  "order"
     t.text     "note"
-    t.integer  "training_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "slotable_id"
+    t.string   "slotable_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
-  add_index "slots", ["training_id"], name: "index_slots_on_training_id", using: :btree
+  add_index "slots", ["slotable_type", "slotable_id"], name: "index_slots_on_slotable_type_and_slotable_id", using: :btree
 
   create_table "templates", force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

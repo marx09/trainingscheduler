@@ -26,9 +26,8 @@ Rails.application.routes.draw do
   get 'results/excercise/:id/user/:user/show' => 'results#show_excercise', as: :results_excercise_show
   get 'results/trainings/:user/show' => 'results#show_training_results', as: :results_training_show
   
-  get 'templates' => 'templates#index', as: :templates
-  
-  post 'templates/save_template' => 'templates#save_template'
+  resources :templates
+  post 'templates/:id/save_content' => 'templates#save_content', as: :save_template_content
   #delete 'templates'
   
   

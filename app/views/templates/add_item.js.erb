@@ -1,6 +1,6 @@
 flashes_redraw("<%= j render partial: 'layouts/flashes' %>");
-$('#trainings_table td.'+<%= @training.from.hour.to_s+@training.date.wday.to_s %>)
+$('#template_grid')
   .removeClass('active')
   .addClass('success')
-  .prepend("<%= j render partial: 'item', locals: {training: @training } %>");
-$('#new_training_modal').modal_success();
+  .prepend("<%= j render partial: 'item', locals: {template: @template } %>");
+$('#new_template_modal').modal_success();

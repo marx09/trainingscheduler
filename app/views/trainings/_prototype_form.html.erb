@@ -1,6 +1,6 @@
 <% modal ||= false %>
 <% remote = modal ? true : false %>
-<%= form_for(@prototype, remote: remote, html: {role: :form, 'data-model' => 'training_prototypes'}) do |f| %>
+<%= form_for(@prototype, remote: remote, html: {role: :form, 'data-model' => 'training_prototype'}) do |f| %>
 
   <% if @prototype.errors.any? %>
     <div id="error_explanation">

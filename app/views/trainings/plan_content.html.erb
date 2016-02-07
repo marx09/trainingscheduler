@@ -11,7 +11,7 @@
   </div>
   
   <p>
-    <a href="#" class="btn btn-warning">Load from template</a>
+    <a id="load-template-btn" href="#load_template_modal" data-toggle="modal" class="btn btn-warning"><i class="fa fa-arrow-down"></i> Load from template</a>
   </p>
   
   <div id="training_grid" data-training-id="<%= @training.id %>">
@@ -53,4 +53,28 @@
   <table>
     <%= render partial: 'serie', locals: {serie: nil}  %>
   </table>
+</div>
+
+<div class="modal fade" id="load_template_modal" tabindex="-1" role="dialog" aria-labelledby="loadTemplateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="loadTemplateModalLabel">Load Training Template</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag load_template_path(), remote: true, method: 'post', authenticity_token: false, class: 'load-template-data', 'data-model' => 'template' do %>
+          
+          <div class="form-group">
+            <%= select_tag 'template', nil, class: "form-control" %>
+            <span class="help-block"></span>
+          </div>
+          <%= button_tag ("<i class='fa fa-arrow-down'></i> Load").html_safe, class: "btn btn-success" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">&times;</button>
+      </div>
+    </div>
+  </div>
 </div>

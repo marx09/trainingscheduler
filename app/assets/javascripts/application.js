@@ -45,10 +45,10 @@ function flashes_redraw(content) {
     $form = this;
     this.clear_previous_errors();
     model = this.data('model');
-
+    
     // show error messages in input form-group help-block
     $.each(errors, function(field, messages){
-      $input = $('input[name="' + model + '[' + field + ']"]');
+      $input = $('input[name="' + model + '[' + field + ']"], select[name="' + model + '[' + field + ']"], select[name="' + field + '"]');
       $input.closest('.form-group').addClass('has-error').find('.help-block').html( messages.join(' & ') );
     });
 

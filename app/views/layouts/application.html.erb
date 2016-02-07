@@ -42,14 +42,13 @@
                 <li><%= link_to ("<i class='fa fa-calendar-check-o fa-fw'></i> Trainings").html_safe, trainings_path %></li>
                 <li><%= link_to ("<i class='fa fa-users fa-fw'></i> Groups").html_safe, groups_path %></li>
                 <li><%= link_to ("<i class='fa fa-star fa-fw'></i> Excercises").html_safe, excercises_path %></li>
-                <li><%= link_to ("<i class='fa fa-bars fa-fw'></i> Templates").html_safe, excercises_path %></li>
+                <li><%= link_to ("<i class='fa fa-bars fa-fw'></i> Templates").html_safe, templates_path %></li>
               </ul>
             
             <% else %>
               <ul class="nav navbar-nav">
                 <li><%= link_to ("<i class='fa fa-calendar-check-o fa-fw'></i> Trainings").html_safe, trainings_path %></li>
-                <li><%= link_to ("<i class='fa fa-star fa-fw'></i> Excercises").html_safe, excercises_path %></li>
-                <li><%= link_to ("<i class='fa fa-line-chart fa-fw'></i> Results").html_safe, excercises_path %></li>
+                <li><%= link_to ("<i class='fa fa-line-chart fa-fw'></i> Results").html_safe, user_path(current_user) %></li>
               </ul>
             <% end %>
             

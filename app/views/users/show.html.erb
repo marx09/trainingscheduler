@@ -8,7 +8,11 @@
           <div class="col-sm-4">
             <div class="panel panel-info">
               <div class="panel-heading">
-                <%= link_to r['name'], excercise_path(r['id']) %>
+                <% if can? :manage, Excercise %>
+                  <%= link_to r['name'], excercise_path(r['id']) %>
+                <% else %>
+                  <%= r['name'] %>
+                <% end %>
               </div>
               <div class="panel-body">
                 Reps (max): <%= r['max_reps'] %><br />
@@ -46,10 +50,10 @@
               <%= link_to ('<i class="fa fa-line-chart"></i> Show chart').html_safe, results_training_show_path(@user), class: "btn btn-sm btn-success" %>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
+    
   </div>
 </div>
 

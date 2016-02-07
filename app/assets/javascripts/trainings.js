@@ -1,6 +1,6 @@
 $(document).on('ready page:load', function(){
 
-  $(document).bind('ajaxError', 'form#new_training, form[id^="edit_training_"]', function(event, jqxhr, settings, exception){
+  $(document).bind('ajaxError', 'form#new_training, form[id^="edit_training_"], form.load-template-data, form#new_training_prototype', function(event, jqxhr, settings, exception){
 
     // note: jqxhr.responseJSON undefined, parsing responseText instead
     $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
@@ -8,35 +8,38 @@ $(document).on('ready page:load', function(){
   });
   
 /**Training excercises management**/ 
+
+  $('#load_template_modal').on('show.bs.modal', function (event) {
+    
+    var modal = $(this);
+    
+    $.get( "/templates/load/all" , function(data) {
+        
+        var options = "";
+        
+        $(data).each(function() {
+            options += '<option value="'+this.id+'">'+this.name+'</option>';
+        });
+        var select = modal.find('.modal-body select#template');
+        
+        select.html(options);
+        
+      })
+      .done(function() {
+        // nothing yet - close modal and refresh page?
+      })
+      .fail(function() {
+        // output errors
+      })
+      .always(function() {
+        // nothing to do yet
+      });
+  });
   
-  $('#add-slot-btn').click(function() {
+  $('#training_grid #add-slot-btn').click(function() {
       var slot = $('#block-prototypes .slot').clone(true)
       $('#last-slot').before($(slot));
       $(slot).find('.group-settings').before($('#block-prototypes .serie').clone(true));
-  });
-  
-  function removeExcercise() {
-      $(this).closest('.serie').remove();
-  }
-  
-  $('.add-excercise').click(function() {
-      var excercise = $('#block-prototypes .serie').clone(true);
-      console.log(excercise);
-      $(this).closest('.group-settings').before($(excercise));
-  });
-  
-  $('.remove-excercise').click(function() {
-      $(this).closest('.serie').remove();
-  });
-  
-  $('.remove-slot').click(function() {
-      $(this).closest('.slot').remove();
-  });
-  
-  $('select.excercise').change(function() {
-      if($(this).val() != 'default') {
-          $(this).closest('.form-group').removeClass('has-error').find('.help-block').remove();
-      };
   });
   
   $('form.training-data').submit(function(event) {
@@ -99,6 +102,30 @@ $(document).on('ready page:load', function(){
         return false;  
       }
       
+  });
+  
+  function removeExcercise() {
+      $(this).closest('.serie').remove();
+  }
+    
+  $('#training_grid .add-excercise').click(function() {
+      var excercise = $('#block-prototypes .serie').clone(true);
+      $(this).closest('.group-settings').before($(excercise));
+  });
+  
+  $('#training_grid .remove-excercise').click(function() {
+    console.log('Ahoj');
+      $(this).closest('.serie').remove();
+  });
+  
+  $('#training_grid .remove-slot').click(function() {
+      $(this).closest('.slot').remove();
+  });
+  
+  $('#training_grid select.excercise').change(function() {
+      if($(this).val() != 'default') {
+          $(this).closest('.form-group').removeClass('has-error').find('.help-block').remove();
+      };
   });
 
 /**Users management**/  

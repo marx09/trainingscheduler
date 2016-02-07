@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :group
-  has_and_belongs_to_many :trainings
+  has_and_belongs_to_many :trainings, -> { order 'date desc' }
   has_many :results
   has_many :training_results
   

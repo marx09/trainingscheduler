@@ -1,5 +1,6 @@
 class TemplatesController < ApplicationController
   def index
+    redirect_to "/" unless can? :manage, Template
     @templates = Template.all
     @template = Template.new
   end
@@ -7,10 +8,8 @@ class TemplatesController < ApplicationController
   def create
     @template = Template.new(template_params)
     respond_to do |format|
-      if @template.save
+      if can?(:manage, @template) && @template.save
         flash[:success] = 'Template was successfully created.'
-        format.html { redirect_to @training, notice: 'Template was successfully created.' }
-        format.json { render action: 'add_item', status: :created, location: @template }
         format.js   { render action: 'add_item', status: :created, location: @template }
       else
         format.html { render action: 'new' }
@@ -27,10 +26,8 @@ class TemplatesController < ApplicationController
   def update
     @template = Template.find(params[:id])
     respond_to do |format|
-      if @template.update(template_params)
+      if can?(:manage, @template) && @template.update(template_params)
         flash[:success] = 'Template was successfully updated.'
-        format.html { redirect_to @template, notice: 'Template was successfully updated.' }
-        format.json { render action: 'show', status: :accepted }
         format.js   { render action: 'show', status: :accepted }
       else
         format.html { render action: 'edit' }
@@ -46,15 +43,38 @@ class TemplatesController < ApplicationController
   end
 
   def save_content
-    # save training and data
-    @training = Training.find(params[:id])
-    @training.data_hash = ActiveSupport::JSON.decode(params[:data_string])
+    # save template and data
+    @template = Template.find(params[:id])
+    @template.data_hash = ActiveSupport::JSON.decode(params[:data_string])
     respond_to do |format|
-      if @training.save
-        flash[:success] = 'Training was successfully saved.'
-        format.js { render action: 'show', status: :accepted, location: @training }
+      if can?(:manage, @template) && @template.save
+        flash[:success] = 'Template was successfully saved.'
+        format.js { render action: 'show', status: :accepted, location: @template }
       else
-        format.js { render json: @training.errors, status: :unprocessable_entity }
+        format.js { render json: @template.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def all
+    @templates = Template.all
+    respond_to do |format|
+      if can?(:manage, Template)
+        format.json { render json: @templates, status: :accepted }
+      else
+        format.js { render json: @template.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def load
+    @template = Template.find_by(id: params[:template])
+    respond_to do |format|
+      if can?(:manage, @template) && @template
+        flash[:success] = 'Template was successfully loaded.'
+        format.js { render action: 'load_template', status: :accepted, location: @template }
+      else
+        format.js { render json: { template: ["Cannot load template."]}, status: :unprocessable_entity }
       end
     end
   end

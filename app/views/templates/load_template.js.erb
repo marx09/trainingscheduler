@@ -1,0 +1,12 @@
+flashes_redraw("<%= j render partial: 'layouts/flashes' %>");
+$('#training_grid .slot').remove();
+<% @template.slots.each do |s| %>
+  $('#training_grid #last-slot').before("<%= j render partial: 'slot', locals: {slot: s } %>");
+<% end %>
+//erase ids
+$('#training_grid .slot').data('slotId', '');
+$('#training_grid .serie').data('serieId', '');
+
+bind_events_to_grid('#training_grid');
+
+$('#load_template_modal').modal_success();

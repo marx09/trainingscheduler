@@ -1,12 +1,15 @@
 <div class="col-sm-10">
   <h2>Training templates</h2>
-  
+  <div id="template_grid" class="row">
+    <% @templates.each do |t| %>
+      <%= render partial: 'item', locals: {template: t } %>
+    <% end %>
+  </div>
 </div>
 
 <div class="col-sm-2">
   <div class="well clearfix">
-    <%= link_to ("<i class='fa fa-plus fa-fw'></i> New training").html_safe, '#new_training_modal', 'data-toggle' => 'modal', class: 'btn btn-success col-xs-12' %>
-    <%= link_to ("<i class='fa fa-plus fa-fw'></i> New training plan").html_safe, '#new_prototype_modal', 'data-toggle' => 'modal', class: 'btn btn-info col-xs-12' %>
+    <%= link_to ("<i class='fa fa-plus fa-fw'></i> New template").html_safe, '#new_template_modal', 'data-toggle' => 'modal', class: 'btn btn-success col-xs-12' %>
   </div>
 </div>
 

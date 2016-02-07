@@ -19,6 +19,26 @@
         <% end %>
       </div>
     </div>
+    <div class="col-sm-6">
+      <h3>Trainings</h3>
+      <div class="row">
+        <% @group.trainings.each do |t| %>
+          <div class="col-sm-6">
+            <%= link_to t.date.to_s(:custom)+" "+t.from.to_s(:time), training_path(t), class: "btn btn-primary", style: "display: block;" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <h3>Training plans</h3>
+      <div class="row">
+        <% @group.training_prototypes.each do |t| %>
+          <div class="col-sm-6">
+            <%= link_to ((Date.today.beginning_of_week+t.day-1).to_s(:day_of_week))+" "+t.from.to_s(:time), training_prototype_path(t), class: "btn btn-info", style: "display: block;" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
 <div class="col-sm-2">
@@ -29,6 +49,7 @@
 </div>
 
 <div class="col-xs-12">
+  <br />
   <%= link_to ("<i class='fa fa-chevron-left fa-fw'></i> Back").html_safe, :back, :class => "btn btn-sm btn-warning" %>
 </div>
 

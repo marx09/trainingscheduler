@@ -1,13 +1,9 @@
 class TrainingPrototypesController < ApplicationController
-  #def index
-  #  @prototypes = TrainingPrototype.all.order(day: :asc).order(from: :asc)
-  #  @prototype = TrainingPrototype.new
-  #end
   
   def create
     @prototype = TrainingPrototype.new(prototype_params)
     respond_to do |format|
-      if @prototype.save
+      if can?(:manage, @prototype) && @prototype.save
         flash[:success] = 'Training plan was successfully created.'
         format.html { redirect_to @prototype, notice: 'Training plan was successfully created.' }
         format.json { render action: 'add_item', status: :created, location: @prototype }
@@ -21,13 +17,14 @@ class TrainingPrototypesController < ApplicationController
   end
   
   def show
+    redirect_to "/" unless can? :manage, TrainingPrototype
     @prototype = TrainingPrototype.find(params[:id])
   end
   
   def update
     @prototype = TrainingPrototype.find(params[:id])
     respond_to do |format|
-      if @prototype.update(prototype_params)
+      if can?(:manage, @prototype) && @prototype.update(prototype_params)
         flash[:success] = 'Training plan was successfully updated.'
         format.html { redirect_to @prototype, notice: 'Training plan was successfully updated.' }
         format.json { render action: 'show', status: :updated }
@@ -48,7 +45,7 @@ class TrainingPrototypesController < ApplicationController
     training.from = prototype.from
     training.users << prototype.group.users
     prototype.trainings << training
-    if prototype.save
+    if can?(:manage, prototype) && prototype.save
       flash[:success] = 'Training was successfully created.'
       redirect_to training_path(training)
     else

@@ -4,7 +4,7 @@ class Slot < ActiveRecord::Base
   before_save :process_data_hash
   
   belongs_to :slotable, polymorphic: true
-  has_many :series, class_name: "Serie", dependent: :destroy
+  has_many :series, -> { order '"order" asc' }, class_name: "Serie", dependent: :destroy
   
   private
   

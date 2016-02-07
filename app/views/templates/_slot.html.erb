@@ -1,0 +1,18 @@
+<table class="table slot" data-slot-id="<%= slot.id if slot %>">
+  <% if slot %>
+    <% slot.series.each do |serie| %>
+      <%= render partial: 'serie', locals: {serie: serie} %>
+    <% end %>
+  <% end %>
+  <tr class="group-settings">
+    <td>
+      <button class="btn btn-xs btn-info add-excercise"><i class="fa fa-plus"></i> Add to group</button>
+    </td>
+    <td colspan="2">
+      <input type="text" class="slot-note form-control" placeholder="Group note" value="" />
+    </td>
+    <td>
+      <button class="pull-right btn btn-xs btn-danger remove-slot"><i class="fa fa-trash"></i> Remove group</button>
+    </td>
+  </tr>
+</table>

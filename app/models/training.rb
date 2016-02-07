@@ -7,7 +7,7 @@ class Training < ActiveRecord::Base
   before_save :check_prototype
   
   has_and_belongs_to_many :users
-  has_many :slots, as: :slotable
+  has_many :slots, -> { order '"order" asc' }, as: :slotable
   belongs_to :training_prototype
   has_many :training_results
   

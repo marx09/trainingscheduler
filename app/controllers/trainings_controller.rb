@@ -23,7 +23,7 @@ class TrainingsController < ApplicationController
   def create
     @training = Training.new(training_params)
     respond_to do |format|
-      if @training.save
+      if can?(:manage, @training) && @training.save
         flash[:success] = 'Training was successfully created.'
         format.html { redirect_to @training, notice: 'Training was successfully created.' }
         format.json { render action: 'add_item', status: :created, location: @training }
@@ -43,7 +43,7 @@ class TrainingsController < ApplicationController
   def update
     @training = Training.find(params[:id])
     respond_to do |format|
-      if @training.update(training_params)
+      if can?(:manage, @training) && @training.update(training_params)
         flash[:success] = 'Training was successfully updated.'
         format.html { redirect_to @training, notice: 'Training was successfully updated.' }
         format.json { render action: 'show', status: :accepted }
@@ -57,6 +57,7 @@ class TrainingsController < ApplicationController
   end
   
   def plan_content
+    redirect_to "/" if cannot?(:manage, Training)
     @training = Training.find(params[:id])
     @excercises = Excercise.all
   end

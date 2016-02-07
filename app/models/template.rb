@@ -3,7 +3,7 @@ class Template < ActiveRecord::Base
   
   before_save :process_data_hash
   
-  has_many :slots, as: :slotable
+  has_many :slots, -> { order '"order" asc' }, as: :slotable
   
   validates :name, presence: true
   

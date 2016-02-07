@@ -1,5 +1,6 @@
 class ExcercisesController < ApplicationController
   def index
+    redirect_to "/" if cannot? :manage, Excercise
     @excercises = Excercise.all
     @excercise = Excercise.new
   end
@@ -7,14 +8,10 @@ class ExcercisesController < ApplicationController
   def create
     @excercise = Excercise.new(excercise_params)
     respond_to do |format|
-      if @excercise.save
+      if can?(:manage, @excercise) && @excercise.save
         flash[:success] = 'Excercise was successfully created.'
-        format.html { redirect_to @group, notice: 'Excercise was successfully created.' }
-        format.json { render action: 'add_item', status: :created, location: @excercise }
         format.js   { render action: 'add_item', status: :created, location: @excercise }
       else
-        format.html { render action: 'new' }
-        format.json { render json: @excercise.errors, status: :unprocessable_entity }
         format.js   { render json: @excercise.errors, status: :unprocessable_entity }
       end
     end
@@ -22,28 +19,16 @@ class ExcercisesController < ApplicationController
   
   def show
     @excercise = Excercise.find(params[:id])
-  end
-
-  def update
-    @excercise = Excercise.find(params[:id])
-    if @excercise.update(excercise_params)
-      redirect_to '/excercises', success: 'Excercise updated.'
-    else
-      redirect_to '/excercises'
-    end
+    redirect_to "/" if cannot? :manage, @excercise
   end
   
   def update
     @excercise = Excercise.find(params[:id])
     respond_to do |format|
-      if @excercise.update(excercise_params)
+      if can?(:manage, @excercise) && @excercise.update(excercise_params)
         flash[:success] = 'Excercise was successfully updated.'
-        format.html { redirect_to @group, notice: 'Excercise was successfully updated.' }
-        format.json { render action: 'show', status: :updated }
         format.js   { render action: 'show', status: :updated }
       else
-        format.html { render action: 'edit' }
-        format.json { render json: @group.errors, status: :unprocessable_entity }
         format.js   { render json: @group.errors, status: :unprocessable_entity }
       end
     end
@@ -51,8 +36,10 @@ class ExcercisesController < ApplicationController
   
   def destroy
     excercise = Excercise.find(params[:id])
-    excercise.destroy
-    redirect_to '/excercises', success: 'Excercise deleted.'
+    if can? :manage, excercise
+      excercise.destroy
+      redirect_to '/excercises', success: 'Excercise deleted.'
+    end
   end
   
   def excercise_params

@@ -1,0 +1,17 @@
+<tr class="slot">
+  <% slot.series.each do |serie| %>
+    <td>
+      <strong><%= serie.excercise.name %></strong>
+    </td>
+    <td>
+      <%= serie.series %>
+    </td>
+    <td>
+      <%= serie.note %>
+    </td>
+  </td>
+  <% end %>
+  <td colspan="3">
+    <p><%= slot.note%></p>
+  </td>
+</tr>

@@ -43,6 +43,7 @@ $(document).on('ready page:load', function(){
   }
   
   bind_events_to_grid('#template_grid');
+  bind_events_to_grid('#block-prototypes');
  
   $('form.template-data').submit(function(event) {
 

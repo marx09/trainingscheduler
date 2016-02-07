@@ -1,3 +1,28 @@
+
+function bind_events_to_grid(selector) {
+    
+  $(selector+' .add-excercise').click(function() {
+      var excercise = $('#block-prototypes .serie').clone(true);
+      $(this).closest('.group-settings').before($(excercise));
+  });
+  
+  $(selector+' .remove-excercise').click(function() {
+      $(this).closest('.serie').remove();
+  });
+  
+  $(selector+' .remove-slot').click(function() {
+      $(this).closest('.slot').remove();
+  });
+  
+  $(selector+' select.excercise').change(function() {
+      if($(this).val() != 'default') {
+          $(this).closest('.form-group').removeClass('has-error').find('.help-block').remove();
+      };
+  });
+
+}
+
+
 $(document).on('ready page:load', function(){
 
   $(document).bind('ajaxError', 'form#new_training, form[id^="edit_training_"], form.load-template-data, form#new_training_prototype', function(event, jqxhr, settings, exception){
@@ -104,10 +129,13 @@ $(document).on('ready page:load', function(){
       
   });
   
+  bind_events_to_grid('#training_grid');
+  
   function removeExcercise() {
       $(this).closest('.serie').remove();
   }
-    
+  
+  /*  
   $('#training_grid .add-excercise').click(function() {
       var excercise = $('#block-prototypes .serie').clone(true);
       $(this).closest('.group-settings').before($(excercise));
@@ -127,6 +155,8 @@ $(document).on('ready page:load', function(){
           $(this).closest('.form-group').removeClass('has-error').find('.help-block').remove();
       };
   });
+  */
+  
 
 /**Users management**/  
   

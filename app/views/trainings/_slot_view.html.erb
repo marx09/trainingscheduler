@@ -1,26 +1,42 @@
 <tr class="slot">
-  <td>
+  <td class="row">
     <% slot.series.each do |serie| %>
-      <div class="row">
-        <div class="col-sm-5">
-          <strong><%= serie.excercise.name %></strong><br />
-          <p>
-            Series: <%= serie.series %><br />
-            Note: <%= serie.note %>
-          </p>
-        </div>
-        <div class="col-sm-7">
-          <div class="row">
-            <% @training.users.each do |u| %>
-              <div class="col-sm-3" id="result-<%= serie.id.to_s+"-"+u.id.to_s %>">
-                <%= render partial: 'user_result', locals: {user: u, serie: serie} %>
-              </div>
-            <% end %>
+      <% if current_user.has_role? "admin" %>
+        <div class="clearfix">
+          <div class="col-sm-5">
+            <strong><%= serie.excercise.name %></strong><br />
+            <p>
+              Series: <%= serie.series %><br />
+              Note: <%= serie.note %>
+            </p>
           </div>
-          <div class="clearfix"></div>
+          <div class="col-sm-7">
+            <div class="row">
+              <% @training.users.each do |u| %>
+                <div class="col-sm-3" id="result-<%= serie.id.to_s+"-"+u.id.to_s %>">
+                  <%= render partial: 'user_result', locals: {user: u, serie: serie} %>
+                </div>
+              <% end %>
+            </div>
+            <div class="clearfix"></div>
+          </div>
         </div>
-      </div>
+      <% else %>
+        <div class="clearfix">
+          <div class="col-sm-3">
+            <strong><%= serie.excercise.name %></strong>
+          </div>
+          <div class="col-sm-2">
+            <%= serie.series %>
+          </div>
+          <div class="col-sm-7">
+            <%= serie.note %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
-    <p><%= slot.note%></p>
+    <div class="col-sm-12">
+      <%= slot.note%>
+    </div>
   </td>
 </tr>

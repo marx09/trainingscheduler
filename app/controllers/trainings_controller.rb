@@ -3,18 +3,28 @@ class TrainingsController < ApplicationController
     @date = Date.today
     from = @date.beginning_of_week
     to = @date.end_of_week
-    @trainings = Training.where(training_prototype: nil, date: from..to)
-    @prototypes = TrainingPrototype.where("created_at - INTERVAL '1 days' * day <= ?", from).order(day: :asc).order(from: :asc)
-    @training = Training.new
-    @prototype = TrainingPrototype.new
+    if current_user.has_role? "admin"
+      @trainings = Training.where(training_prototype: nil, date: from..to)
+      @prototypes = TrainingPrototype.where("created_at - INTERVAL '1 days' * day <= ?", from).order(day: :asc).order(from: :asc)
+      @training = Training.new
+      @prototype = TrainingPrototype.new
+    else
+      @trainings = current_user.trainings.where(training_prototype: nil, date: from..to)
+      @prototypes = current_user.training_prototypes.where("training_prototypes.created_at - INTERVAL '1 days' * day <= ?", from).order(day: :asc).order(from: :asc)
+    end
   end
   
   def calendar_move
     @date = Date.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
     from = @date.beginning_of_week
     to = @date.end_of_week
-    @trainings = Training.where(training_prototype: nil, date: from..to)
-    @prototypes = TrainingPrototype.where("created_at - INTERVAL '1 days' * day <= ?", from).order(day: :asc).order(from: :asc)
+    if current_user.has_role? "admin"
+      @trainings = Training.where(training_prototype: nil, date: from..to)
+      @prototypes = TrainingPrototype.where("created_at - INTERVAL '1 days' * day <= ?", from).order(day: :asc).order(from: :asc)
+    else
+      @trainings = current_user.trainings.where(training_prototype: nil, date: from..to)
+      @prototypes = current_user.training_prototypes.where("training_prototypes.created_at - INTERVAL '1 days' * day <= ?", from).order(day: :asc).order(from: :asc)
+    end
     respond_to do |format|
       format.js { render action: 'redraw_calendar', status: :accepted }
     end
@@ -57,8 +67,8 @@ class TrainingsController < ApplicationController
   end
   
   def plan_content
-    redirect_to "/" if cannot?(:manage, Training)
     @training = Training.find(params[:id])
+    redirect_to "/" if cannot?(:manage, @training)
     @excercises = Excercise.all
   end
   
@@ -67,7 +77,7 @@ class TrainingsController < ApplicationController
     @training = Training.find(params[:id])
     @training.data_hash = ActiveSupport::JSON.decode(params[:data_string])
     respond_to do |format|
-      if @training.save
+      if can?(:manage, @training) && @training.save
         flash[:success] = 'Training was successfully saved.'
         format.js { render action: 'show', status: :accepted, location: @training }
       else
@@ -80,11 +90,10 @@ class TrainingsController < ApplicationController
     training = Training.find(params[:id])
     
     respond_to do |format|
-      if training
+      if can?(:manage, training) && training
         @participants = training.users
         @available = User.where.not(id: training.users)
         format.html { render action: 'users', layout: false, status: :accepted }
-       # format.json { render json: {training_users: training.users, available_users: users}, status: :accepted }
       else
         format.json { render json: {}, status: :unprocessable_entity }
       end
@@ -95,7 +104,7 @@ class TrainingsController < ApplicationController
     @training = Training.find(params[:id])
     @training.users_hash = ActiveSupport::JSON.decode(params[:data_string])
     respond_to do |format|
-      if @training.save
+      if can?(:manage, @training) && @training.save
         flash[:success] = 'Users were successfully saved.'
         format.js { render action: 'show', status: :accepted, location: @training }
       else
@@ -118,7 +127,7 @@ class TrainingsController < ApplicationController
     @result.weight = params[:weight]
 
     respond_to do |format|
-      if @result.save
+      if can?(:manage, @result) && @result.save
         flash[:success] = 'Result was successfully saved.'
         format.js { render action: 'show_result', status: :accepted }
       else
@@ -141,7 +150,7 @@ class TrainingsController < ApplicationController
     @result.rate = params[:rate]
 
     respond_to do |format|
-      if @result.save
+      if can?(:manage, @result) && @result.save
         flash[:success] = 'Training result was successfully saved.'
         format.js { render action: 'show_training_result', status: :accepted }
       else

@@ -1,9 +1,11 @@
 <div class="col-sm-3 pull-left" id="training_result-<%= training.id.to_s+"-"+user.id.to_s %>">
-  <% result = user.training_results.find_by(training: training) %>
-  <% if result %>
-    <button class="btn btn-sm btn-warning btn-edit-training-result pull-right" data-toggle="modal" data-target="#user_training_result_modal" data-id="<%= result.id %>" data-user-name="<%= user.first_name %> <%= user.last_name %>" data-calories="<%= result.calories %>" data-rate="<%= result.rate %>" data-time="<%= result.time %>"><i class="fa fa-pencil fa-fw"></i></button>
-  <% else %>
-    <button class="btn btn-sm btn-success btn-add-training-result pull-right" data-toggle="modal" data-target="#user_training_result_modal" data-user="<%= user.id %>" data-training="<%= training.id %>" data-user-name="<%= user.first_name %> <%= user.last_name %>"><i class="fa fa-plus fa-fw"></i></button>
+  <% if current_user.has_role? "admin" %>
+    <% result = user.training_results.find_by(training: training) %>
+    <% if result %>
+      <button class="btn btn-sm btn-warning btn-edit-training-result pull-right" data-toggle="modal" data-target="#user_training_result_modal" data-id="<%= result.id %>" data-user-name="<%= user.first_name %> <%= user.last_name %>" data-calories="<%= result.calories %>" data-rate="<%= result.rate %>" data-time="<%= result.time %>"><i class="fa fa-pencil fa-fw"></i></button>
+    <% else %>
+      <button class="btn btn-sm btn-success btn-add-training-result pull-right" data-toggle="modal" data-target="#user_training_result_modal" data-user="<%= user.id %>" data-training="<%= training.id %>" data-user-name="<%= user.first_name %> <%= user.last_name %>"><i class="fa fa-plus fa-fw"></i></button>
+    <% end %>
   <% end %>
   <%= image_tag user.avatar.url(:thumb), :class => "avatar-thumb pull-left" %>
   <%= user.first_name+" "+user.last_name %><br />

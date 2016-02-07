@@ -8,14 +8,16 @@
       </tr>
     <% else %>
       <tr>
-        <th style="width: 20%;">
-          Excercise
-        </th>
-        <th style="width: 10%;">
-          Series
-        </th>
-        <th style="width: 70%;">
-          Note
+        <th>
+          <div class="col-sm-3">
+            Excercise
+          </div>
+          <div class="col-sm-2">
+            Series
+          </div>
+          <div class="col-sm-7">
+            Note
+          </div>
         </th>
       </tr>
       <% @template.slots.each do |slot| %>

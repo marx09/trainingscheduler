@@ -3,15 +3,21 @@
 <% if current_training %>
   <%= link_to "#{prototype.group.name if prototype.group}", training_path(current_training), class: "btn btn-xs btn-primary" %>
 <% else %>
-  <%= link_to "#{prototype.group.name if prototype.group}", create_training_from_prototype_path(prototype, date.beginning_of_week+prototype.day-1), method: :put, class: "btn btn-xs btn-default" %>
+  <% if current_user.has_role? "admin" %>
+    <%= link_to "#{prototype.group.name if prototype.group}", create_training_from_prototype_path(prototype, date.beginning_of_week+prototype.day-1), method: :put, class: "btn btn-xs btn-default" %>
+  <% else %>
+    <span class="btn btn-xs btn-default"><%= "#{prototype.group.name if prototype.group}" %></span>
+  <% end %>
 <% end %>
-  <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="caret"></span>
-    <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><%= link_to "Edit plan", training_prototype_path(prototype) %></li>
-    <li role="separator" class="divider"></li>
-    <li><%= link_to "Group detail", group_path(prototype.group) %></li>
-  </ul>
+  <% if current_user.has_role? "admin" %>
+    <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="caret"></span>
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><%= link_to "Edit plan", training_prototype_path(prototype) %></li>
+      <li role="separator" class="divider"></li>
+      <li><%= link_to "Group detail", group_path(prototype.group) %></li>
+    </ul>
+  <% end %>
 </div>

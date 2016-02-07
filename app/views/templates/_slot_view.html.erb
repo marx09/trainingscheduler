@@ -1,17 +1,20 @@
 <tr class="slot">
-  <% slot.series.each do |serie| %>
-    <td>
-      <strong><%= serie.excercise.name %></strong>
-    </td>
-    <td>
-      <%= serie.series %>
-    </td>
-    <td>
-      <%= serie.note %>
-    </td>
-  </td>
-  <% end %>
-  <td colspan="3">
-    <p><%= slot.note%></p>
+  <td colspan="3" class="row">
+    <% slot.series.each do |serie| %>
+      <div class="clearfix">
+        <div class="col-sm-3">
+          <strong><%= serie.excercise.name %></strong>
+        </div>
+        <div class="col-sm-2">
+          <%= serie.series %>
+        </div>
+        <div class="col-sm-7">
+          <%= serie.note %>
+        </div>
+      </div>
+    <% end %>
+    <div class="col-sm-12">
+      <p><%= slot.note%></p>
+    </div>
   </td>
 </tr>

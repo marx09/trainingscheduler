@@ -17,8 +17,8 @@ class TrainingPrototypesController < ApplicationController
   end
   
   def show
-    redirect_to "/" unless can? :manage, TrainingPrototype
     @prototype = TrainingPrototype.find(params[:id])
+    redirect_to "/" unless can? :manage, @prototype
   end
   
   def update
@@ -39,17 +39,21 @@ class TrainingPrototypesController < ApplicationController
   
   def create_from
     prototype = TrainingPrototype.find(params[:id])
+    if cannot?(:manage, prototype)
+      redirect_to "/"
+      return
+    end
     training = Training.new
     training.date = params[:date]
     training.from_prototype_at = params[:date]
     training.from = prototype.from
     training.users << prototype.group.users
     prototype.trainings << training
-    if can?(:manage, prototype) && prototype.save
+    if prototype.save
       flash[:success] = 'Training was successfully created.'
       redirect_to training_path(training)
     else
-      redirect_to training_prototypes_path
+      redirect_to trainings_path
     end
   end
   

@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :group
   has_and_belongs_to_many :trainings, -> { order 'date desc' }
+  has_many :training_prototypes, through: :group
   has_many :results
   has_many :training_results
   

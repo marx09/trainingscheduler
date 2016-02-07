@@ -23,7 +23,7 @@
       <h3>Trainings</h3>
       <div class="row">
         <% @group.trainings.each do |t| %>
-          <div class="col-sm-6">
+          <div class="col-sm-6" style="margin-bottom: .5em;">
             <%= link_to t.date.to_s(:custom)+" "+t.from.to_s(:time), training_path(t), class: "btn btn-primary", style: "display: block;" %>
           </div>
         <% end %>
@@ -33,7 +33,7 @@
       <h3>Training plans</h3>
       <div class="row">
         <% @group.training_prototypes.each do |t| %>
-          <div class="col-sm-6">
+          <div class="col-sm-6" style="margin-bottom: .5em;">
             <%= link_to ((Date.today.beginning_of_week+t.day-1).to_s(:day_of_week))+" "+t.from.to_s(:time), training_prototype_path(t), class: "btn btn-info", style: "display: block;" %>
           </div>
         <% end %>

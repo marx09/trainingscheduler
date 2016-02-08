@@ -18,10 +18,12 @@ class Slot < ActiveRecord::Base
         else
           serie = Serie.new
         end
-        serie.order = s['order'].to_i
-        serie.excercise = Excercise.find(s['excercise'].to_i)
-        serie.series = s['series'].to_i unless s['series'].empty?
-        serie.note = s['note']
+        serie.attributes = {
+          order: s['order'].to_i,
+          excercise: Excercise.find(s['excercise'].to_i),
+          series: s['series'].to_i,
+          note: s['note']
+        }
         serie.save
         series_collection << serie
       end

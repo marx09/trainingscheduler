@@ -26,9 +26,11 @@ class Training < ActiveRecord::Base
         else
           slot = Slot.new
         end
-        slot.data_hash = s['series']
-        slot.note = s['note']
-        slot.order = s['order'].to_i
+        slot.attributes = {
+          data_hash: s['series'],
+          note: s['note'],
+          order: s['order'].to_i
+        }
         slot.save
         slots_collection << slot
       end

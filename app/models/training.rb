@@ -1,21 +1,22 @@
+# Training
 class Training < ActiveRecord::Base
   attr_accessor :data_hash
   attr_accessor :users_hash
-  
+
   before_save :process_data_hash
   before_save :process_users_hash
   before_save :check_prototype
-  
+
   has_and_belongs_to_many :users
   has_many :slots, -> { order '"order" asc' }, as: :slotable
   belongs_to :training_prototype
   has_many :training_results
-  
+
   validates :date, presence: true
   validates :from, presence: true
-  
+
   private
-  
+
   def process_data_hash
     if data_hash && data_hash['slots']
       slots_collection = []
@@ -23,7 +24,7 @@ class Training < ActiveRecord::Base
         if s['id'].to_i > 0
           slot = Slot.find(s['id'].to_i)
         else
-          slot = Slot.new()
+          slot = Slot.new
         end
         slot.data_hash = s['series']
         slot.note = s['note']
@@ -35,7 +36,7 @@ class Training < ActiveRecord::Base
       Slot.where(slotable: nil).destroy_all
     end
   end
-  
+
   def process_users_hash
     if users_hash && users_hash['users']
       users_collection = []
@@ -48,9 +49,9 @@ class Training < ActiveRecord::Base
       self.users = users_collection
     end
   end
-  
+
   def check_prototype
-    if self.training_prototype && (self.from_prototype_at != self.date || self.from != self.training_prototype.from)
+    if training_prototype && (from_prototype_at != date || from != training_prototype.from)
       self.training_prototype = nil
     end
   end

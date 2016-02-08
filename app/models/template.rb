@@ -1,14 +1,15 @@
+# Template
 class Template < ActiveRecord::Base
   attr_accessor :data_hash
-  
+
   before_save :process_data_hash
-  
+
   has_many :slots, -> { order '"order" asc' }, as: :slotable
-  
+
   validates :name, presence: true
-  
+
   private
-  
+
   def process_data_hash
     if data_hash && data_hash['slots']
       slots_collection = []
@@ -16,7 +17,7 @@ class Template < ActiveRecord::Base
         if s['id'].to_i > 0
           slot = Slot.find(s['id'].to_i)
         else
-          slot = Slot.new()
+          slot = Slot.new
         end
         slot.data_hash = s['series']
         slot.note = s['note']

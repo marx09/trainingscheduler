@@ -37,3 +37,7 @@ table.table.slot, .excercises .slot {
 table.table.slot:nth-child(2n), .excercises .slot:nth-child(2n) {
   background-color: #dfdfdf;
 }
+
+#groups_grid .col-sm-3:nth-child(5n) {
+    clear: both;
+}

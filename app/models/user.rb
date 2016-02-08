@@ -1,3 +1,4 @@
+# User
 class User < ActiveRecord::Base
   rolify
   # Include default devise modules. Others available are:
@@ -9,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :training_prototypes, through: :group
   has_many :results
   has_many :training_results
-  
+
   has_attached_file :avatar, styles: { medium: '300x300>', thumb: '50x50>' },
                              default_url: '/images/:style/missing.png'
   validates_attachment_content_type :avatar, content_type: %r{\Aimage\/.*\Z}

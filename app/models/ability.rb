@@ -1,3 +1,4 @@
+# Ability
 class Ability
   include CanCan::Ability
 
@@ -28,15 +29,7 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
-    
-    if user.has_role? :admin
-      can :manage, :all
-    else
-      can :read, Excercise
-      #can :read, Group, id: Group.with_role(:viewer, user).pluck(:id)
-      #can :read, TrainingPrototype, id: TrainingPrototype.with_role(:viewer, user).pluck(:id)
-      #can :read, Training, id: Training.with_role(:viewer, user).pluck(:id)
-      can :read, Result, id: Result.with_role(:viewer, user).pluck(:id)
-    end
+
+    can :manage, :all if user.has_role? :admin
   end
 end
